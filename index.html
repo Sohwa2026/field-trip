@@ -269,6 +269,11 @@
         return matchCat && matchSearch;
       });
 
+      // 최종 업데이트 날짜 기준 최신순 정렬
+      filtered.sort((a, b) => {
+        return String(b.updatedAt).localeCompare(String(a.updatedAt));
+      });
+      
       document.getElementById("totalCount").textContent = filtered.length;
       tbody.innerHTML = "";
 
