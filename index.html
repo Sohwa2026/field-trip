@@ -320,7 +320,8 @@
         document.getElementById("inputLocation").value = target.location;
         document.getElementById("inputTarget").value = target.target;
         document.getElementById("inputFeatures").value = target.features;
-        document.getElementById("inputEditor").value = "";
+        const matchEditor = String(target.updatedAt).match(/\(([^)]+)\)/);
+        document.getElementById("inputEditor").value = matchEditor ? matchEditor[1] : "";
       } else {
         title.textContent = "새 체험학습 장소 등록";
         document.getElementById("placeForm").reset();
