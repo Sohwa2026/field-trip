@@ -60,6 +60,7 @@
         <button onclick="setSubCategory('과학·환경·안전')" class="sub-cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">과학·환경·안전</button>
         <button onclick="setSubCategory('역사·문화·예술')" class="sub-cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">역사·문화·예술</button>
         <button onclick="setSubCategory('농촌·생태·자연')" class="sub-cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">농촌·생태·자연</button>
+        <button onclick="setSubCategory('그 외 기타')" class="sub-cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">그 외 기타</button>
       </div>
     </div>
 
@@ -118,6 +119,7 @@
               <option value="과학·환경·안전">과학·환경·안전</option>
               <option value="역사·문화·예술">역사·문화·예술</option>
               <option value="농촌·생태·자연">농촌·생태·자연</option>
+              <option value="그 외 기타">그 외 기타</option>
             </select>
           </div>
         </div>
@@ -249,6 +251,7 @@
         case "과학·환경·안전": return "bg-sky-100 text-sky-700";
         case "역사·문화·예술": return "bg-amber-100 text-amber-800";
         case "농촌·생태·자연": return "bg-emerald-100 text-emerald-700";
+        case "그 외 기타": return "bg-violet-100 text-violet-700";
         default: return "bg-slate-100 text-slate-700";
       }
     }
