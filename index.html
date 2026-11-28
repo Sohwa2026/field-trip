@@ -19,10 +19,10 @@
       <div>
         <span class="inline-block bg-indigo-500 text-xs font-semibold px-2.5 py-1 rounded-full mb-1">교사 협업 데이터베이스</span>
         <h1 class="text-2xl font-bold tracking-tight">🏫 소화초등학교 체험학습 포털</h1>
-        <p class="text-indigo-200 text-sm mt-1">수원 및 인근 권역 체험학습 장소 정보를 관리합니다.</p>
+        <p class="text-indigo-200 text-sm mt-1">수원 및 인근 권역 현장형·교내형 체험학습 정보를 함께 관리합니다.</p>
       </div>
       <button onclick="openModal()" class="bg-white text-indigo-700 hover:bg-indigo-50 font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center justify-center gap-2">
-        <span>+ 새 장소 추가하기</span>
+        <span>+ 새 장소/프로그램 추가</span>
       </button>
     </div>
   </header>
@@ -30,28 +30,42 @@
   <!-- 메인 컨테이너 -->
   <main class="max-w-7xl mx-auto px-4 py-6">
     
-    <!-- 카테고리 탭 & 검색창 -->
-    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-      <!-- 카테고리 버튼 -->
-      <div class="flex flex-wrap gap-2" id="categoryTabs">
-        <button onclick="setCategory('전체')" class="cat-btn active px-4 py-2 rounded-lg text-sm font-semibold bg-indigo-600 text-white">전체</button>
-        <button onclick="setCategory('테마파크·스포츠')" class="cat-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">테마파크·스포츠</button>
-        <button onclick="setCategory('과학·환경·안전')" class="cat-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">과학·환경·안전</button>
-        <button onclick="setCategory('역사·문화·예술')" class="cat-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">역사·문화·예술</button>
-        <button onclick="setCategory('농촌·생태·자연')" class="cat-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">농촌·생태·자연</button>
+    <!-- 대분류 / 중분류 필터 & 검색창 -->
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6 space-y-4">
+      
+      <!-- 1단: 대분류 탭 + 검색창 -->
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-slate-400 mr-1">운영 형태</span>
+          <div class="inline-flex rounded-lg bg-slate-100 p-1" id="mainCategoryTabs">
+            <button onclick="setMainCategory('전체')" class="main-cat-btn px-4 py-1.5 rounded-md text-sm font-bold bg-indigo-600 text-white shadow-sm transition">전체</button>
+            <button onclick="setMainCategory('현장형')" class="main-cat-btn px-4 py-1.5 rounded-md text-sm font-bold text-slate-600 hover:text-slate-900 transition">🚌 현장형</button>
+            <button onclick="setMainCategory('교내형')" class="main-cat-btn px-4 py-1.5 rounded-md text-sm font-bold text-slate-600 hover:text-slate-900 transition">🏫 교내형</button>
+          </div>
+        </div>
+
+        <!-- 검색 입력 -->
+        <div class="relative w-full lg:w-80">
+          <input type="text" id="searchInput" onkeyup="renderTable()" placeholder="장소명, 지역, 특징, 학년 검색..." 
+            class="w-full pl-4 pr-10 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <span class="absolute right-3 top-2.5 text-slate-400 text-sm">🔍</span>
+        </div>
       </div>
 
-      <!-- 검색 입력 -->
-      <div class="relative w-full lg:w-80">
-        <input type="text" id="searchInput" onkeyup="renderTable()" placeholder="장소명, 지역, 특징, 학년 검색..." 
-          class="w-full pl-4 pr-10 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-        <span class="absolute right-3 top-2.5 text-slate-400 text-sm">🔍</span>
+      <!-- 2단: 중분류 카테고리 버튼 -->
+      <div class="flex flex-wrap items-center gap-2" id="subCategoryTabs">
+        <span class="text-xs font-bold text-slate-400 mr-1">주제 분야</span>
+        <button onclick="setSubCategory('전체')" class="sub-cat-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-white">전체</button>
+        <button onclick="setSubCategory('테마파크·스포츠')" class="sub-cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">테마파크·스포츠</button>
+        <button onclick="setSubCategory('과학·환경·안전')" class="sub-cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">과학·환경·안전</button>
+        <button onclick="setSubCategory('역사·문화·예술')" class="sub-cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">역사·문화·예술</button>
+        <button onclick="setSubCategory('농촌·생태·자연')" class="sub-cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">농촌·생태·자연</button>
       </div>
     </div>
 
     <!-- 상태 표시줄 -->
     <div class="flex justify-between items-center mb-3 text-sm text-slate-500 px-1">
-      <div>총 <strong id="totalCount" class="text-indigo-600">0</strong>개의 체험학습 장소가 등록되어 있습니다.</div>
+      <div>총 <strong id="totalCount" class="text-indigo-600">0</strong>개의 체험학습 정보가 등록되어 있습니다.</div>
       <div id="syncStatus" class="text-xs bg-slate-200 px-2.5 py-1 rounded">데이터 불러오는 중...</div>
     </div>
 
@@ -61,9 +75,9 @@
         <table class="w-full text-left border-collapse">
           <thead>
             <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
-              <th class="py-3.5 px-4 w-32">카테고리</th>
-              <th class="py-3.5 px-4 w-48">장소명</th>
-              <th class="py-3.5 px-4 w-36">위치</th>
+              <th class="py-3.5 px-4 w-36">분류 (대/중)</th>
+              <th class="py-3.5 px-4 w-48">장소 / 프로그램명</th>
+              <th class="py-3.5 px-4 w-36">위치 / 장소</th>
               <th class="py-3.5 px-4 w-28">추천 대상</th>
               <th class="py-3.5 px-4">주요 특징 및 단체 운영 포인트</th>
               <th class="py-3.5 px-4 w-36">최종 업데이트</th>
@@ -82,31 +96,40 @@
   <div id="placeModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl">
       <div class="flex justify-between items-center border-b pb-3 mb-4">
-        <h2 id="modalTitle" class="text-lg font-bold text-slate-800">새 체험학습 장소 등록</h2>
+        <h2 id="modalTitle" class="text-lg font-bold text-slate-800">새 체험학습 등록</h2>
         <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
       </div>
       
       <form id="placeForm" onsubmit="savePlace(event)" class="space-y-4">
         <input type="hidden" id="editId" />
         
-        <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">카테고리 *</label>
-          <select id="inputCategory" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
-            <option value="테마파크·스포츠">테마파크·스포츠</option>
-            <option value="과학·환경·안전">과학·환경·안전</option>
-            <option value="역사·문화·예술">역사·문화·예술</option>
-            <option value="농촌·생태·자연">농촌·생태·자연</option>
-          </select>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">대분류 (운영 형태) *</label>
+            <select id="inputMainCategory" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
+              <option value="현장형">🚌 현장형 (외부 이동)</option>
+              <option value="교내형">🏫 교내형 (찾아오는 체험)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">중분류 (주제 분야) *</label>
+            <select id="inputSubCategory" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
+              <option value="테마파크·스포츠">테마파크·스포츠</option>
+              <option value="과학·환경·안전">과학·환경·안전</option>
+              <option value="역사·문화·예술">역사·문화·예술</option>
+              <option value="농촌·생태·자연">농촌·생태·자연</option>
+            </select>
+          </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">장소명 *</label>
+            <label class="block text-xs font-bold text-slate-600 mb-1">장소 / 프로그램명 *</label>
             <input type="text" id="inputName" required placeholder="예: 국립농업박물관" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-600 mb-1">위치 *</label>
-            <input type="text" id="inputLocation" required placeholder="예: 수원시 권선구" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+            <label class="block text-xs font-bold text-slate-600 mb-1">위치 (교내형은 업체/장소) *</label>
+            <input type="text" id="inputLocation" required placeholder="예: 수원시 권선구 / 각 반 교실" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
           </div>
         </div>
 
@@ -123,7 +146,7 @@
 
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">주요 특징 및 단체 운영 포인트 *</label>
-          <textarea id="inputFeatures" rows="3" required placeholder="버스 주차, 도시락 취식 공간, 예약 시기, 주요 체험 내용 등을 적어주세요." class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"></textarea>
+          <textarea id="inputFeatures" rows="3" required placeholder="버스 주차, 도시락 취식 공간, 교내 진행 시 필요 공간, 연락처 등을 적어주세요." class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"></textarea>
         </div>
 
         <div class="flex justify-end gap-2 pt-3 border-t">
@@ -136,59 +159,29 @@
 
   <script>
     // =========================================================================
-    // [중요] 1단계에서 복사한 구글 Apps Script 웹 앱 URL을 아래 따옴표 안에 넣으세요!
+    // [중요] 구글 Apps Script 웹 앱 URL을 아래 따옴표 안에 넣으세요!
     // =========================================================================
     const API_URL = "https://script.google.com/macros/s/AKfycbwPKdxICnhu9faNvt8cG9e33--RqhoLGIeGeYaTktm6kPbfYSKnyPjG8oDuRWCno1LTBw/exec";
 
-    // 초기 기본 데이터 40곳
     const DEFAULT_PLACES = [
-      { id: "1", category: "테마파크·스포츠", name: "한국민속촌", location: "용인시 기흥구", target: "전 학년", features: "조선 생활사 해설 투어, 전통 공예·음식 체험, 학교 단체 요금 및 안전 서류 완비", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "2", category: "테마파크·스포츠", name: "에버랜드", location: "용인시 처인구", target: "전 학년", features: "놀이시설 외 동물원·식물원 생태 탐구 프로그램 운영, 대형 버스 주차 및 단체 식사 편리", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "3", category: "테마파크·스포츠", name: "아쿠아플라넷 광교", location: "수원시 영통구", target: "전 학년", features: "날씨 무관 실내 해양 생태 관찰, 아쿠아리스트 진로 교육, 광교호수공원 산책 연계", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "4", category: "테마파크·스포츠", name: "바운스 슈퍼파크 수원영통센터", location: "수원시 영통구", target: "전 학년", features: "트램폴린·클라이밍 등 실내 스포츠 테마파크, 안전요원 상주 및 학급별 로테이션 운영", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "5", category: "테마파크·스포츠", name: "스포츠몬스터 수원점", location: "수원시 장안구", target: "중·고학년", features: "스타필드 수원 내 실내 스포츠 어트랙션 체험, 고학년 체육·레크리에이션 활동에 적합", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "6", category: "테마파크·스포츠", name: "캐리비안베이", location: "용인시 처인구", target: "전 학년", features: "하절기 물놀이 안전 교육 및 수상 레저 체험, 단체 구명조끼 및 안전요원 배치 체계적", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "7", category: "테마파크·스포츠", name: "서울랜드", location: "과천시 광명로", target: "전 학년", features: "놀이기구 및 계절별 체험 프로그램 운영, 인근 서울대공원·국립과천과학관과 권역 동일", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "8", category: "테마파크·스포츠", name: "용인대장금파크", location: "용인시 처인구", target: "중·고학년", features: "사극 촬영지 탐방, 전통 의복 체험 및 조선시대 건축물 관찰, 넓은 야외 부지 보유", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "9", category: "테마파크·스포츠", name: "한국잡월드", location: "성남시 분당구", target: "전 학년", features: "어린이체험관·청소년체험관 운영, 80명 규모 조별 직업체험 및 진로 탐색에 최적화", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "10", category: "테마파크·스포츠", name: "수원미디어센터", location: "수원시 팔달구", target: "고학년", features: "방송 제작, 라디오 DJ, 영상 편집 등 미디어·진로 체험, 조별 로테이션 수업 가능", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "11", category: "과학·환경·안전", name: "경기도교육청미래과학교육원", location: "수원시 장안구", target: "전 학년", features: "기초 과학 전시, 수족관, 천체투영실, 로봇 체험 등 층별 순환 관람 가능, 관람료 무료", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "12", category: "과학·환경·안전", name: "국립과천과학관", location: "과천시 상하벌로", target: "전 학년", features: "기초·첨단·자연사·천체 등 방대한 전시 규모, 실내 단체 도시락 취식 공간 완비", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "13", category: "과학·환경·안전", name: "경기도국민안전체험관", location: "오산시 북삼미로", target: "전 학년", features: "지진·화재·교통·생활 안전 및 응급처치 실습, 관람료 무료, 학교 단체 전용 조별 순환 체험", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "14", category: "과학·환경·안전", name: "수원시기후변화체험교육관 두드림", location: "수원시 권선구", target: "중·고학년", features: "기후 위기·신재생에너지·탄소중립 놀이형 전시, 2개 조(전시 해설/교구 체험) 교차 진행", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "15", category: "과학·환경·안전", name: "삼성이노베이션뮤지엄", location: "수원시 영통구", target: "고학년", features: "전자산업 역사 및 반도체·AI 등 첨단 기술 도슨트 견학, 관람료 무료 및 교육 프로그램", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "16", category: "과학·환경·안전", name: "용인시민안전체험관", location: "용인시 처인구", target: "전 학년", features: "화재 대피, 완강기, 심폐소생술 등 실습 위주 안전 교육, 학급 단위 순환 체험 운영", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "17", category: "과학·환경·안전", name: "화성시어린이문화센터", location: "화성시 봉담읍", target: "저·중학년", features: "과학·예술·직업 융합 체험관 및 키즈체험관 운영, 실내 단체 이동 및 프로그램 쾌적", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "18", category: "과학·환경·안전", name: "안산산업역사박물관", location: "안산시 단원구", target: "중·고학년", features: "대한민국 산업화·제조업 발전사 및 로봇·미래 산업 체험, 대형 버스 주차장 완비", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "19", category: "과학·환경·안전", name: "시화호조력발전소 조력문화관", location: "안산시 단원구", target: "중·고학년", features: "조력 발전 원리 및 신재생에너지·갯벌 생태 학습, 바다 조망과 과학 교육 동시 진행", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "20", category: "과학·환경·안전", name: "수원시자원회수시설(그린투어)", location: "수원시 영통구", target: "중·고학년", features: "생활쓰레기 소각 및 자원 순환 과정 견학, 환경 보전 및 분리배출 실천 교육에 효과적", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "21", category: "역사·문화·예술", name: "수원화성박물관", location: "수원시 팔달구", target: "중·고학년", features: "정조의 수원화성 축성 과정 및 거중기 등 과학적 건축 원리 학습, 성곽길 체험 연계", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "22", category: "역사·문화·예술", name: "화성행궁", location: "수원시 팔달구", target: "중·고학년", features: "문화관광해설사 동행 투어 및 무예24기 상설공연 관람, 수원화성박물관과 코스 연계", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "23", category: "역사·문화·예술", name: "수원박물관", location: "수원시 영통구", target: "중학년", features: "수원 역사·서예 전시 및 야외 유물전시장 보유, 어린이 체험실과 넓은 야외 공간 확보", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "24", category: "역사·문화·예술", name: "수원광교박물관", location: "수원시 영통구", target: "중·고학년", features: "광교 출토 유물 및 독도·근현대사 기증 유물 전시, 어린이 역사 교육 및 호수공원 연계", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "25", category: "역사·문화·예술", name: "경기도어린이박물관", location: "용인시 기흥구", target: "저·중학년", features: "인체·건축·자연·과학·다문화 주제의 조작형 체험 전시, 실내 시설로 날씨 영향 없음", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "26", category: "역사·문화·예술", name: "경기도박물관", location: "용인시 기흥구", target: "고학년", features: "선사~조선시대 경기도 역사·유물 탐구, 바로 옆 어린이박물관과 학년군별 동시 방문 가능", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "27", category: "역사·문화·예술", name: "백남준아트센터", location: "용인시 기흥구", target: "중·고학년", features: "미디어 아트 감상 및 현대미술 창작 교육 프로그램 운영, 경기도박물관과 도보 이동 가능", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "28", category: "역사·문화·예술", name: "수원시립미술관 (행궁본관)", location: "수원시 팔달구", target: "전 학년", features: "현대미술 기획전 관람 및 어린이 예술 교육 워크숍, 화성행궁 광장과 바로 연결", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "29", category: "역사·문화·예술", name: "국립현대미술관 과천", location: "과천시 광명로", target: "전 학년", features: "야외 조각공원 및 어린이미술관·기획전 관람, 넓은 야외 부지에서 피크닉 및 감상 활동", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "30", category: "역사·문화·예술", name: "융건릉 및 용주사", location: "화성시 안녕동", target: "중·고학년", features: "정조의 효심과 조선 왕릉 세계유산 탐방, 숲길 산책 및 문화해설사 역사 수업 연계", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "31", category: "역사·문화·예술", name: "제암리3·1운동순국기념관", location: "화성시 향남읍", target: "고학년", features: "화성 지역 독립운동사 및 3·1운동 역사 학습, 독립운동 체험 교육 프로그램 운영", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "32", category: "역사·문화·예술", name: "오산독산성 및 세마대지", location: "오산시 지곶동", target: "중·고학년", features: "권율 장군의 세마대 일화와 산성 방어 체계 학습, 완만한 숲길 트레킹 및 역사 탐방", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "33", category: "농촌·생태·자연", name: "국립농업박물관", location: "수원시 권선구", target: "전 학년", features: "농업 역사, 스마트팜 기술, 어린이박물관, 야외 다랑이논 생태 체험, 80명 수용 최신 시설", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "34", category: "농촌·생태·자연", name: "용인농촌테마파크", location: "용인시 원삼면", target: "저·중학년", features: "농경문화전시관, 곤충체험관, 원예·공예 체험 및 넓은 잔디광장을 활용한 농촌 생태 체험", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "35", category: "농촌·생태·자연", name: "일월수목원", location: "수원시 장안구", target: "저·중학년", features: "전시온실 및 주제정원 중심 도심형 수목원, 보행로가 평탄하고 안전해 저학년 인솔에 적합", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "36", category: "농촌·생태·자연", name: "영흥수목원", location: "수원시 영통구", target: "저·중학년", features: "산지형 수목원 및 생태숲 해설 프로그램 운영, 계절별 숲 체험 및 자연물 공작 활동", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "37", category: "농촌·생태·자연", name: "서울대공원 (동물원·식물원)", location: "과천시 대공원광장로", target: "전 학년", features: "동물원 관람 및 동식물 생태 교육 프로그램 운영, 넓은 피크닉 광장에서 80명 단체 식사 편리", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "38", category: "농촌·생태·자연", name: "한택식물원", location: "용인시 처인구", target: "저·중학년", features: "국내 최대 민간 식물원, 계절 야생화 관찰·숲 해설·화분 심기 체험, 넓은 잔디광장 보유", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "39", category: "농촌·생태·자연", name: "화성시우리꽃식물원", location: "화성시 팔탄면", target: "저·중학년", features: "대형 유리온실(사계절관) 보유로 우천 시에도 식물 관찰 가능, 자생식물 생태 해설 운영", updatedAt: "2026-11-27 (기본등록)" },
-      { id: "40", category: "농촌·생태·자연", name: "물향기수목원", location: "오산시 청학로", target: "저·중학년", features: "물과 나무 테마의 경기도립 수목원, 전철·버스 접근성 우수 및 평탄한 숲길 생태 탐방", updatedAt: "2026-11-27 (기본등록)" }
+      { id: "1", category: "현장형 > 테마파크·스포츠", name: "한국민속촌", location: "용인시 기흥구", target: "전 학년", features: "조선 생활사 해설 투어, 전통 공예·음식 체험, 학교 단체 요금 및 안전 서류 완비", updatedAt: "2026-11-27 (기본등록)" }
     ];
 
     let places = [];
-    let currentCategory = "전체";
+    let currentMainCategory = "전체";
+    let currentSubCategory = "전체";
     const isGoogleConnected = API_URL.startsWith("https://script.google.com");
 
-    // 초기 데이터 로드
+    // category 문자열("현장형 > 테마파크·스포츠")을 대분류와 중분류로 분리하는 도우미 함수
+    function parseCategory(rawCat) {
+      const str = String(rawCat || "");
+      if (str.includes(">")) {
+        const parts = str.split(">").map(s => s.trim());
+        return { main: parts[0] || "현장형", sub: parts[1] || "테마파크·스포츠" };
+      }
+      return { main: "현장형", sub: str || "테마파크·스포츠" };
+    }
+
     async function loadData() {
       const statusEl = document.getElementById("syncStatus");
       if (isGoogleConnected) {
@@ -196,16 +189,7 @@
           statusEl.textContent = "구글 시트 동기화 중...";
           const res = await fetch(API_URL);
           const data = await res.json();
-          if (data.length === 0) {
-            // 시트가 비어있으면 기본 40개 데이터를 시트에 자동 업로드
-            places = [...DEFAULT_PLACES];
-            await fetch(API_URL, {
-              method: "POST",
-              body: JSON.stringify({ action: "init", items: places })
-            });
-          } else {
-            places = data;
-          }
+          places = data.length === 0 ? [...DEFAULT_PLACES] : data;
           statusEl.textContent = "🟢 구글 시트 실시간 연동됨";
           statusEl.className = "text-xs bg-emerald-100 text-emerald-700 font-semibold px-2.5 py-1 rounded";
         } catch (err) {
@@ -223,30 +207,44 @@
 
     function loadLocalData() {
       const saved = localStorage.getItem("field_trip_places");
-      if (saved) {
-        places = JSON.parse(saved);
-      } else {
-        places = [...DEFAULT_PLACES];
-        localStorage.setItem("field_trip_places", JSON.stringify(places));
-      }
+      places = saved ? JSON.parse(saved) : [...DEFAULT_PLACES];
     }
 
-    // 카테고리 필터 변경
-    function setCategory(cat) {
-      currentCategory = cat;
-      document.querySelectorAll(".cat-btn").forEach(btn => {
-        if (btn.textContent === cat) {
-          btn.className = "cat-btn active px-4 py-2 rounded-lg text-sm font-semibold bg-indigo-600 text-white";
+    // 대분류 선택
+    function setMainCategory(mainCat) {
+      currentMainCategory = mainCat;
+      document.querySelectorAll(".main-cat-btn").forEach(btn => {
+        const label = btn.textContent.replace("🚌 ", "").replace("🏫 ", "").trim();
+        if (label === mainCat) {
+          btn.className = "main-cat-btn px-4 py-1.5 rounded-md text-sm font-bold bg-indigo-600 text-white shadow-sm transition";
         } else {
-          btn.className = "cat-btn px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200";
+          btn.className = "main-cat-btn px-4 py-1.5 rounded-md text-sm font-bold text-slate-600 hover:text-slate-900 transition";
         }
       });
       renderTable();
     }
 
-    // 카테고리 배지 색상
-    function getBadgeColor(cat) {
-      switch(cat) {
+    // 중분류 선택
+    function setSubCategory(subCat) {
+      currentSubCategory = subCat;
+      document.querySelectorAll(".sub-cat-btn").forEach(btn => {
+        if (btn.textContent.trim() === subCat) {
+          btn.className = "sub-cat-btn px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-white";
+        } else {
+          btn.className = "sub-cat-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200";
+        }
+      });
+      renderTable();
+    }
+
+    function getMainBadgeColor(main) {
+      return main === "교내형" 
+        ? "bg-purple-100 text-purple-700 border border-purple-200" 
+        : "bg-indigo-50 text-indigo-700 border border-indigo-200";
+    }
+
+    function getSubBadgeColor(sub) {
+      switch(sub) {
         case "테마파크·스포츠": return "bg-rose-100 text-rose-700";
         case "과학·환경·안전": return "bg-sky-100 text-sky-700";
         case "역사·문화·예술": return "bg-amber-100 text-amber-800";
@@ -255,46 +253,53 @@
       }
     }
 
-    // 테이블 렌더링
     function renderTable() {
       const tbody = document.getElementById("placeTableBody");
       const keyword = document.getElementById("searchInput").value.toLowerCase();
 
       const filtered = places.filter(p => {
-        const matchCat = currentCategory === "전체" || p.category === currentCategory;
+        const { main, sub } = parseCategory(p.category);
+        const matchMain = currentMainCategory === "전체" || main === currentMainCategory;
+        const matchSub = currentSubCategory === "전체" || sub === currentSubCategory;
         const matchSearch = 
           p.name.toLowerCase().includes(keyword) ||
           p.location.toLowerCase().includes(keyword) ||
           p.features.toLowerCase().includes(keyword) ||
           p.target.toLowerCase().includes(keyword);
-        return matchCat && matchSearch;
+        return matchMain && matchSub && matchSearch;
       });
 
-      // 최종 업데이트 날짜 기준 최신순 정렬
-      filtered.sort((a, b) => {
-        return String(b.updatedAt).localeCompare(String(a.updatedAt));
-      });
-      
+      // 최신순 정렬
+      filtered.sort((a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt)));
+
       document.getElementById("totalCount").textContent = filtered.length;
       tbody.innerHTML = "";
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-10 text-slate-400">검색 조건에 맞는 체험학습 장소가 없습니다.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-10 text-slate-400">선택한 분류나 검색 조건에 맞는 체험학습 정보가 없습니다.</td></tr>`;
         return;
       }
 
       filtered.forEach(item => {
+        const { main, sub } = parseCategory(item.category);
+        const formattedDate = String(item.updatedAt)
+          .replace(' (', '<br><span class="text-slate-600 font-medium">(')
+          .replace(')', ')</span>');
+
         const tr = document.createElement("tr");
         tr.className = "hover:bg-slate-50 transition";
         tr.innerHTML = `
           <td class="py-3.5 px-4">
-            <span class="inline-block px-2.5 py-1 rounded-md text-xs font-bold ${getBadgeColor(item.category)}">${item.category}</span>
+            <div class="flex flex-col items-start gap-1">
+              <span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold ${getMainBadgeColor(main)}">${main}</span>
+              <span class="inline-block px-2.5 py-0.5 rounded-md text-xs font-bold ${getSubBadgeColor(sub)}">${sub}</span>
+            </div>
           </td>
           <td class="py-3.5 px-4 font-bold text-slate-900">${item.name}</td>
           <td class="py-3.5 px-4 text-slate-600">${item.location}</td>
           <td class="py-3.5 px-4 text-slate-600 font-medium">${item.target}</td>
           <td class="py-3.5 px-4 text-slate-700 leading-relaxed">${item.features}</td>
-          <td class="py-3.5 px-4 text-xs text-slate-400 leading-relaxed">${item.updatedAt.replace(' (', '<br><span class="text-slate-600 font-medium">(').replace(')', ')</span>')}</td>
+          <td class="py-3.5 px-4 text-xs text-slate-400 leading-relaxed">${formattedDate}</td>
           <td class="py-3.5 px-4 text-center">
             <div class="flex justify-center gap-1.5">
               <button onclick="openModal('${item.id}')" class="px-2.5 py-1 text-xs font-semibold bg-slate-100 hover:bg-indigo-100 text-slate-700 hover:text-indigo-700 rounded">수정</button>
@@ -306,16 +311,17 @@
       });
     }
 
-    // 모달 열기 (신규/수정)
     function openModal(id = null) {
       const modal = document.getElementById("placeModal");
       const title = document.getElementById("modalTitle");
       
       if (id) {
         const target = places.find(p => String(p.id) === String(id));
-        title.textContent = "체험학습 장소 정보 수정";
+        const { main, sub } = parseCategory(target.category);
+        title.textContent = "체험학습 정보 수정";
         document.getElementById("editId").value = target.id;
-        document.getElementById("inputCategory").value = target.category;
+        document.getElementById("inputMainCategory").value = main;
+        document.getElementById("inputSubCategory").value = sub;
         document.getElementById("inputName").value = target.name;
         document.getElementById("inputLocation").value = target.location;
         document.getElementById("inputTarget").value = target.target;
@@ -323,9 +329,12 @@
         const matchEditor = String(target.updatedAt).match(/\(([^)]+)\)/);
         document.getElementById("inputEditor").value = matchEditor ? matchEditor[1] : "";
       } else {
-        title.textContent = "새 체험학습 장소 등록";
+        title.textContent = "새 체험학습 등록";
         document.getElementById("placeForm").reset();
         document.getElementById("editId").value = "";
+        // 현재 필터로 선택해 둔 대분류/중분류가 있으면 기본값으로 자동 세팅
+        if (currentMainCategory !== "전체") document.getElementById("inputMainCategory").value = currentMainCategory;
+        if (currentSubCategory !== "전체") document.getElementById("inputSubCategory").value = currentSubCategory;
       }
       modal.classList.remove("hidden");
       modal.classList.add("flex");
@@ -337,7 +346,6 @@
       modal.classList.remove("flex");
     }
 
-    // 현재 날짜/시간 포맷
     function getFormattedDate(editor) {
       const now = new Date();
       const yyyy = now.getFullYear();
@@ -349,7 +357,6 @@
       return `${yyyy}-${mm}-${dd} ${hh}:${min}${author}`;
     }
 
-    // 저장 (추가 및 수정)
     async function savePlace(e) {
       e.preventDefault();
       const saveBtn = document.getElementById("saveBtn");
@@ -357,7 +364,9 @@
       saveBtn.textContent = "저장 중...";
 
       const id = document.getElementById("editId").value;
-      const category = document.getElementById("inputCategory").value;
+      const mainCat = document.getElementById("inputMainCategory").value;
+      const subCat = document.getElementById("inputSubCategory").value;
+      const category = `${mainCat} > ${subCat}`;
       const name = document.getElementById("inputName").value;
       const location = document.getElementById("inputLocation").value;
       const target = document.getElementById("inputTarget").value;
@@ -366,7 +375,6 @@
       const updatedAt = getFormattedDate(editor);
 
       if (id) {
-        // 수정
         const idx = places.findIndex(p => String(p.id) === String(id));
         places[idx] = { id, category, name, location, target, features, updatedAt };
         if (isGoogleConnected) {
@@ -376,7 +384,6 @@
           });
         }
       } else {
-        // 추가
         const newId = String(Date.now());
         const newItem = { id: newId, category, name, location, target, features, updatedAt };
         places.unshift(newItem);
@@ -398,10 +405,8 @@
       renderTable();
     }
 
-    // 삭제
     async function deletePlace(id) {
-      if (!confirm("정말 이 체험학습 장소를 삭제하시겠습니까?")) return;
-      
+      if (!confirm("정말 이 체험학습 정보를 삭제하시겠습니까?")) return;
       places = places.filter(p => String(p.id) !== String(id));
       if (isGoogleConnected) {
         await fetch(API_URL, {
@@ -414,7 +419,6 @@
       renderTable();
     }
 
-    // 실행
     loadData();
   </script>
 </body>
